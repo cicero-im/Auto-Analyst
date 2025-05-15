@@ -3,6 +3,7 @@ import time
 import uuid
 import os
 import sys
+from security import safe_requests
 
 # Add the parent directory to the path so we can import modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -94,7 +95,7 @@ def test_api_endpoint():
         print(f"Response: {data}")
         
         # Verify the record was created
-        verification = requests.get(
+        verification = safe_requests.get(
             f"{base_url}/analytics/debug/user_usage/{test_user_id}",
             headers={
                 "X-Admin-API-Key": admin_key

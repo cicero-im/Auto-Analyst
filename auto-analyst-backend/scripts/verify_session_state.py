@@ -1,6 +1,7 @@
 import requests
 import uuid
 import time
+from security import safe_requests
 
 def test_session_workflow():
     # Base URL
@@ -22,7 +23,7 @@ def test_session_workflow():
     
     # Step 2: Verify session state
     print("\n2. Verifying session state...")
-    session_state = requests.get(f"{base_url}/debug/session/{session_id}").json()
+    session_state = safe_requests.get(f"{base_url}/debug/session/{session_id}").json()
     print(f"Session state: {session_state}")
     
     # Step 3: Make a chat request with this session
@@ -36,7 +37,7 @@ def test_session_workflow():
     
     # Step 4: Verify session state again
     print("\n4. Verifying session state after chat...")
-    session_state = requests.get(f"{base_url}/debug/session/{session_id}").json()
+    session_state = safe_requests.get(f"{base_url}/debug/session/{session_id}").json()
     print(f"Updated session state: {session_state}")
     
     # Step 5: Check analytics data
@@ -45,7 +46,7 @@ def test_session_workflow():
     admin_key = "default-admin-key-change-me"  # Adjust to your admin key
 
     # Check general model usage
-    analytics_response = requests.get(
+    analytics_response = safe_requests.get(
         f"{base_url}/analytics/debug/model_usage",
         headers={"X-Admin-API-Key": admin_key}
     ).json()
@@ -59,7 +60,7 @@ def test_session_workflow():
     # Check user-specific usage
     user_id = login_response.get('user_id')
     if user_id:
-        user_usage = requests.get(
+        user_usage = safe_requests.get(
             f"{base_url}/analytics/debug/user_usage/{user_id}",
             headers={"X-Admin-API-Key": admin_key}
         ).json()
