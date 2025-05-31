@@ -85,8 +85,8 @@ def test_api_endpoint():
         },
         headers={
             "X-Admin-API-Key": admin_key
-        }
-    )
+        }, 
+    timeout=60)
     
     if response.status_code == 200:
         data = response.json()
@@ -98,8 +98,8 @@ def test_api_endpoint():
             f"{base_url}/analytics/debug/user_usage/{test_user_id}",
             headers={
                 "X-Admin-API-Key": admin_key
-            }
-        ).json()
+            }, 
+        timeout=60).json()
         
         print(f"User {test_user_id} has {verification.get('total_records', 0)} records")
         if verification.get('recent_records'):

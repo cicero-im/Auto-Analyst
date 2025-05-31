@@ -16,13 +16,13 @@ def test_session_workflow():
     email = f"{username}@example.com"
     login_response = requests.post(
         f"{base_url}/auth/login",
-        json={"username": username, "email": email, "session_id": session_id}
-    ).json()
+        json={"username": username, "email": email, "session_id": session_id}, 
+    timeout=60).json()
     print(f"Login response: {login_response}")
     
     # Step 2: Verify session state
     print("\n2. Verifying session state...")
-    session_state = requests.get(f"{base_url}/debug/session/{session_id}").json()
+    session_state = requests.get(f"{base_url}/debug/session/{session_id}", timeout=60).json()
     print(f"Session state: {session_state}")
     
     # Step 3: Make a chat request with this session
@@ -30,13 +30,13 @@ def test_session_workflow():
     chat_response = requests.post(
         f"{base_url}/chat/data_explorer",
         json={"query": "Show me a summary of the dataset"},
-        params={"session_id": session_id}
-    ).json()
+        params={"session_id": session_id}, 
+    timeout=60).json()
     print(f"Chat response received: {len(str(chat_response))} bytes")
     
     # Step 4: Verify session state again
     print("\n4. Verifying session state after chat...")
-    session_state = requests.get(f"{base_url}/debug/session/{session_id}").json()
+    session_state = requests.get(f"{base_url}/debug/session/{session_id}", timeout=60).json()
     print(f"Updated session state: {session_state}")
     
     # Step 5: Check analytics data
@@ -47,8 +47,8 @@ def test_session_workflow():
     # Check general model usage
     analytics_response = requests.get(
         f"{base_url}/analytics/debug/model_usage",
-        headers={"X-Admin-API-Key": admin_key}
-    ).json()
+        headers={"X-Admin-API-Key": admin_key}, 
+    timeout=60).json()
     print(f"Total records in database: {analytics_response.get('total_records', 0)}")
 
     if 'sample_records' in analytics_response and analytics_response['sample_records']:
@@ -61,8 +61,8 @@ def test_session_workflow():
     if user_id:
         user_usage = requests.get(
             f"{base_url}/analytics/debug/user_usage/{user_id}",
-            headers={"X-Admin-API-Key": admin_key}
-        ).json()
+            headers={"X-Admin-API-Key": admin_key}, 
+        timeout=60).json()
         print(f"User {user_id} has {user_usage.get('total_records', 0)} usage records")
         
         if user_usage.get('recent_records'):
