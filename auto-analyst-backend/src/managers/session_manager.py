@@ -13,6 +13,7 @@ from src.agents.agents import auto_analyst, auto_analyst_ind
 from src.agents.retrievers.retrievers import make_data
 from src.managers.chat_manager import ChatManager
 from dotenv import load_dotenv
+import secrets
 
 load_dotenv()
 
@@ -310,9 +311,7 @@ This dataset appears clean with consistent formatting and no missing values, mak
         else:
             # Check if chat_id already exists
             if "chat_id" not in self._sessions[session_id] or not self._sessions[session_id]["chat_id"]:
-                # Use current timestamp + random number to generate a more readable ID
-                import random
-                chat_id_to_use = int(time.time() * 1000) % 1000000 + random.randint(1, 999)
+                chat_id_to_use = int(time.time() * 1000) % 1000000 + secrets.SystemRandom().randint(1, 999)
             else:
                 chat_id_to_use = self._sessions[session_id]["chat_id"]
         

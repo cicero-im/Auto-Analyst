@@ -1,8 +1,8 @@
 import sys
 import os
-import random
 from datetime import datetime, timedelta
 import sqlite3
+import secrets
 
 # Add parent directory to path so we can import modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -37,19 +37,19 @@ def generate_test_data(num_records=100):
         
         for _ in range(num_records):
             # Random timestamp within the date range
-            random_days = random.randint(0, 30)
+            random_days = secrets.SystemRandom().randint(0, 30)
             timestamp = end_date - timedelta(days=random_days, 
-                                           hours=random.randint(0, 23),
-                                           minutes=random.randint(0, 59))
+                                           hours=secrets.SystemRandom().randint(0, 23),
+                                           minutes=secrets.SystemRandom().randint(0, 59))
             
             # Select random model and user
-            model_name = random.choice(list(MODELS.keys()))
+            model_name = secrets.choice(list(MODELS.keys()))
             model_info = MODELS[model_name]
-            user_id = random.choice(USER_IDS)
+            user_id = secrets.choice(USER_IDS)
             
             # Generate random token counts
-            prompt_tokens = random.randint(100, 1000)
-            completion_tokens = random.randint(50, 500)
+            prompt_tokens = secrets.SystemRandom().randint(100, 1000)
+            completion_tokens = secrets.SystemRandom().randint(50, 500)
             total_tokens = prompt_tokens + completion_tokens
             
             # Calculate cost
@@ -58,7 +58,7 @@ def generate_test_data(num_records=100):
             # Create model usage record
             usage = ModelUsage(
                 user_id=user_id,
-                chat_id=random.randint(1, 50),  # Random chat ID
+                chat_id=secrets.SystemRandom().randint(1, 50),  # Random chat ID
                 model_name=model_name,
                 provider=model_info["provider"],
                 prompt_tokens=prompt_tokens,
@@ -68,8 +68,8 @@ def generate_test_data(num_records=100):
                 response_size=completion_tokens * 4,  # Approximate characters
                 cost=cost,
                 timestamp=timestamp,
-                is_streaming=random.choice([True, False]),
-                request_time_ms=random.randint(500, 5000)  # Between 0.5 and 5 seconds
+                is_streaming=secrets.choice([True, False]),
+                request_time_ms=secrets.SystemRandom().randint(500, 5000)  # Between 0.5 and 5 seconds
             )
             session.add(usage)
         
