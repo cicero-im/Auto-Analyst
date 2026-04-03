@@ -6,7 +6,7 @@ fastapi==0.111.1
 FastAPI-SQLAlchemy==0.2.1
 gunicorn==22.0.0
 joblib==1.4.2
-litellm==1.53.7
+litellm==1.83.0
 llama-index==0.12.14
 llama-index-agent-openai==0.4.2
 llama-index-embeddings-openai==0.3.1
